@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+class Dijkstra {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n, src;
+        int[][] cost = new int[10][10];
+        int[] dist = new int[10];
+        boolean[] visited = new boolean[10];
+
+        System.out.print("Enter number of vertices: ");
+        n = sc.nextInt();
+
+        System.out.println("Enter cost matrix (0 for no edge):");
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                cost[i][j] = sc.nextInt();
+
+        System.out.print("Enter source vertex (0 to " + (n - 1) + "): ");
+        src = sc.nextInt();
+
+        for (int i = 0; i < n; i++)
+            dist[i] = 999;
+
+        dist[src] = 0;
+
+        for (int i = 0; i < n; i++) {
+            int u = -1, min = 999;
+
+            for (int j = 0; j < n; j++)
+                if (!visited[j] && dist[j] < min) {
+                    min = dist[j];
+                    u = j;
+                }
+
+            if (u == -1) break;
+
+            visited[u] = true;
+
+            for (int v = 0; v < n; v++)
+                if (!visited[v] && cost[u][v] > 0 &&
+                    dist[u] + cost[u][v] < dist[v])
+                    dist[v] = dist[u] + cost[u][v];
+        }
+
+        System.out.println("Shortest distances:");
+        for (int i = 0; i < n; i++)
+            System.out.println("To vertex " + i + " = " + dist[i]);
+
+        sc.close();
+    }
+}
